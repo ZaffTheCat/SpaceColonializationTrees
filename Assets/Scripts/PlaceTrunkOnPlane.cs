@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlaceTrunkOnPlane : MonoBehaviour
 {
     [SerializeField]
-    public new Camera camera;
+    public static Camera cameraMain;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,10 +18,8 @@ public class PlaceTrunkOnPlane : MonoBehaviour
         // LMB pressed
         if (Input.GetMouseButtonDown(0))
         {
-
-            
             RaycastHit hit;
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cameraMain.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow, 1000.0f);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
