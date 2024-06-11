@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class CameraCode : MonoBehaviour
 {
-    private static Camera _cameraMain;
+    private static Camera cameraMain;
     private float speed = 25.0f;
     private float lerpSpeed = 10.0f;
 
@@ -17,7 +17,7 @@ public class CameraCode : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _cameraMain = GetComponent<Camera>();
+        cameraMain = GetComponent<Camera>();
 
         mouseX = 0.0f;
         mouseY = 0.0f;
@@ -35,8 +35,8 @@ public class CameraCode : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        Vector3 forward = _cameraMain.transform.forward;
-        Vector3 right = _cameraMain.transform.right;
+        Vector3 forward = cameraMain.transform.forward;
+        Vector3 right = cameraMain.transform.right;
 
         forward.y = 0;
         right.y = 0;
@@ -46,9 +46,9 @@ public class CameraCode : MonoBehaviour
         Vector3 forwardMovement = verticalInput * forward * speed * Time.fixedDeltaTime;
         Vector3 sideMovement = horizontalInput * right * speed * Time.fixedDeltaTime;
 
-        Vector3 newCameraPosition = _cameraMain.transform.position + forwardMovement + sideMovement;
+        Vector3 newCameraPosition = cameraMain.transform.position + forwardMovement + sideMovement;
 
-        _cameraMain.transform.position = Vector3.Lerp(_cameraMain.transform.position, newCameraPosition, Time.fixedDeltaTime * lerpSpeed);
+        cameraMain.transform.position = Vector3.Lerp(cameraMain.transform.position, newCameraPosition, Time.fixedDeltaTime * lerpSpeed);
     }
 
     protected void CameraRotation()
@@ -60,7 +60,7 @@ public class CameraCode : MonoBehaviour
             mouseY = Mathf.Clamp(mouseY, -80.0f, 80.0f);
 
             Quaternion rotation = Quaternion.AngleAxis(mouseY, this.transform.right) * Quaternion.AngleAxis(mouseX, Vector3.up);
-            _cameraMain.transform.rotation = Quaternion.Lerp(_cameraMain.transform.rotation, rotation, Time.deltaTime * mouseLerpSpeed);
+            cameraMain.transform.rotation = Quaternion.Lerp(cameraMain.transform.rotation, rotation, Time.deltaTime * mouseLerpSpeed);
         }
     }
 }

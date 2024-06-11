@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class PlaceTrunkOnPlane : MonoBehaviour
 {
-    [SerializeField]
-    public static Camera cameraMain;
+    public Camera _cameraMain;
+    public GameObject _prefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,15 +16,20 @@ public class PlaceTrunkOnPlane : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        int layer = 6;
+        int layerMask = 1 << layer;
+
         // LMB pressed
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
-            Ray ray = cameraMain.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _cameraMain.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow, 1000.0f);
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
-                Debug.Log("Hit");
+                Vector3 point = hit.point;
+                point.y += 0.3f;
+                GameObject stump = Instantiate(_prefab, point, Quaternion.identity);
             }
 
         }
