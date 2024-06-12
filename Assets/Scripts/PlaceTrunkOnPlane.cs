@@ -7,6 +7,7 @@ public class PlaceTrunkOnPlane : MonoBehaviour
 {
     public Camera _cameraMain;
     public GameObject _prefab;
+    public AttractorSpawner _attractorSpawner;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,7 @@ public class PlaceTrunkOnPlane : MonoBehaviour
         int layerMask = 1 << layer;
 
         // LMB pressed
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
             RaycastHit hit;
             Ray ray = _cameraMain.ScreenPointToRay(Input.mousePosition);
@@ -30,6 +31,8 @@ public class PlaceTrunkOnPlane : MonoBehaviour
                 Vector3 point = hit.point;
                 point.y += 0.3f;
                 GameObject stump = Instantiate(_prefab, point, Quaternion.identity);
+                _attractorSpawner.SetOrigin(point);
+                //_attractorSpawner.SpawnAttractors();
             }
 
         }
