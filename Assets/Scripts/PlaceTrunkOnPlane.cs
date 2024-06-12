@@ -32,7 +32,7 @@ public class PlaceTrunkOnPlane : MonoBehaviour
                 point.y += 0.3f;
                 GameObject stump = Instantiate(_prefab, point, Quaternion.identity);
                 _attractorSpawner.SetOrigin(point);
-                //_attractorSpawner.SpawnAttractors();
+                _attractorSpawner.SpawnAttractors();
             }
 
         }
