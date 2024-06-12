@@ -15,13 +15,13 @@ public class PlaceTrunkOnPlane : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         int layer = 6;
         int layerMask = 1 << layer;
 
         // LMB pressed
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
             Ray ray = _cameraMain.ScreenPointToRay(Input.mousePosition);
