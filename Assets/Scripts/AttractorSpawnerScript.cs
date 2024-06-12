@@ -6,11 +6,14 @@ using UnityEngine;
 public class AttractorSpawner : MonoBehaviour
 {
     public GameObject _attractorObject;
+    public BranchManager _branchManager;
 
     [Header("Attractor Spawn Settings")]
     private static Vector3 attractorOrigin;
     private static float attractorRange;
     private static int attractorCount;
+
+    private List<GameObject> spawns = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +48,27 @@ public class AttractorSpawner : MonoBehaviour
         for (int i = 0; i < attractorCount; i++)
         {
             attractorPlacement = new Vector3(attractorOrigin.x + Random.Range(-attractorRange, attractorRange), attractorOrigin.y + Random.Range(0, attractorRange), attractorOrigin.z + Random.Range(-attractorRange, attractorRange));
-            Instantiate(_attractorObject, attractorPlacement, Quaternion.identity);
+            spawns.Add(Instantiate(_attractorObject, attractorPlacement, Quaternion.identity));
         }
+    }
+
+    public void Populate()
+    {
+        //iterate through each branch
+        for(int i =0; i <_branchManager._branchList.Count; i++)
+        {
+            //iterate through each attractor
+            for(int j=0; j< spawns.Count; j++)
+            {
+                //calculate the distance between branch and attratcor
+
+
+                //delete attractots that are too close
+
+                //create branch in the direction of the attractor if in range
+            }
+        }
+        //empty the list at the end
+        _branchManager._branchList.Clear();
     }
 }

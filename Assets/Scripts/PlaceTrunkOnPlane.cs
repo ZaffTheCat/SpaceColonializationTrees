@@ -8,6 +8,7 @@ public class PlaceTrunkOnPlane : MonoBehaviour
     public Camera _cameraMain;
     public GameObject _prefab;
     public AttractorSpawner _attractorSpawner;
+    public BranchManager _branchManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,9 +31,10 @@ public class PlaceTrunkOnPlane : MonoBehaviour
             {
                 Vector3 point = hit.point;
                 point.y += 0.3f;
-                GameObject stump = Instantiate(_prefab, point, Quaternion.identity);
+                _branchManager.AddBranch(Instantiate(_prefab, point, Quaternion.identity));
                 _attractorSpawner.SetOrigin(point);
                 _attractorSpawner.SpawnAttractors();
+                _attractorSpawner.Populate();
             }
 
         }
