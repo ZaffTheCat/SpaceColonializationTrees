@@ -13,6 +13,10 @@ public class AttractorSpawner : MonoBehaviour
     private static float attractorRange;
     private static int attractorCount;
 
+    [Header("Attraction Distance Settings")]
+    private static float minimumDistance = 2.7f;
+    private static float cullDistance = 0.9f;
+
     private List<GameObject> spawns = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -61,11 +65,20 @@ public class AttractorSpawner : MonoBehaviour
             for(int j=0; j< spawns.Count; j++)
             {
                 //calculate the distance between branch and attratcor
-
+                float distance = Vector3.Distance(_branchManager._branchList[i].transform.position, spawns[j].transform.position);
+                Debug.Log(distance);
 
                 //delete attractots that are too close
-
+                if (distance < cullDistance)
+                {
+                    spawns.RemoveAt(j);
+                    continue;
+                }
                 //create branch in the direction of the attractor if in range
+                else if (distance < minimumDistance) {
+
+                }
+
             }
         }
         //empty the list at the end
