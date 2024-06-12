@@ -35,9 +35,12 @@ public class CameraCode : MonoBehaviour
 
     protected void CameraMovement()
     {
-        float verticalInput = Input.GetAxis("Vertical");
+        // Get new input values
+        float depthInput = Input.GetAxis("Depth");
         float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
 
+        // Calculate displacement
         Vector3 forward = cameraMain.transform.forward;
         Vector3 right = cameraMain.transform.right;
 
@@ -46,24 +49,29 @@ public class CameraCode : MonoBehaviour
         forward = forward.normalized;
         right = right.normalized;
 
-        Vector3 forwardMovement = verticalInput * forward * speed * Time.fixedDeltaTime;
+        Vector3 forwardMovement = depthInput * forward * speed * Time.fixedDeltaTime;
         Vector3 sideMovement = horizontalInput * right * speed * Time.fixedDeltaTime;
+        Vector3 upMovement = verticalInput * Vector3.up * speed * Time.fixedDeltaTime;
 
-        Vector3 newCameraPosition = cameraMain.transform.position + forwardMovement + sideMovement;
-
+        // Transform camera position based on displacement, use liear interpolation for smoothness 
+        Vector3 newCameraPosition = cameraMain.transform.position + forwardMovement + sideMovement + upMovement;
         cameraMain.transform.position = Vector3.Lerp(cameraMain.transform.position, newCameraPosition, Time.fixedDeltaTime * lerpSpeed);
     }
 
     protected void CameraRotation()
     {
-        if(Input.GetMouseButton(1))
+        // Update mouse values
+        if (Input.GetMouseButton(1))
         {
             mouseX += Input.GetAxisRaw("Mouse X") * Time.fixedDeltaTime * mouseSpeed;
             mouseY -= Input.GetAxisRaw("Mouse Y") * Time.fixedDeltaTime * mouseSpeed;
-            mouseY = Mathf.Clamp(mouseY, -80.0f, 80.0f);
 
-            Quaternion rotation = Quaternion.AngleAxis(mouseY, this.transform.right) * Quaternion.AngleAxis(mouseX, Vector3.up);
-            cameraMain.transform.rotation = Quaternion.Lerp(cameraMain.transform.rotation, rotation, Time.deltaTime * mouseLerpSpeed);
         }
+
+        // Calculate new camera rotation, use linear interpolation for smoothness
+        mouseY = Mathf.Clamp(mouseY, -80.0f, 80.0f);
+        Quaternion rotation = Quaternion.AngleAxis(mouseY, this.transform.right) * Quaternion.AngleAxis(mouseX, Vector3.up);
+        cameraMain.transform.rotation = Quaternion.Lerp(cameraMain.transform.rotation, rotation, Time.deltaTime * mouseLerpSpeed);
     }
+    
 }
