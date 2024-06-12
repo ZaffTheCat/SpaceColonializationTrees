@@ -9,8 +9,11 @@ public class CameraCode : MonoBehaviour
     private float speed = 25.0f;
     private float lerpSpeed = 10.0f;
 
+    [Header("Mouse Attributes")]
     private float mouseX;
     private float mouseY;
+
+    [Header("Mouse Settings")]
     private float mouseSpeed = 100.0f;
     private float mouseLerpSpeed = 4.0f;
 
