@@ -535,6 +535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attractorObject: {fileID: 5160581719056185806, guid: 34403d7e2de27974c93f90a1ac68f9cb, type: 3}
+  _branchObject: {fileID: 1028467757859377201, guid: c78757bee17233e458e42998491239d7, type: 3}
   _branchManager: {fileID: 877737073}
 --- !u!1 &2135265754
 GameObject:
