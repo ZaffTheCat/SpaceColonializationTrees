@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AttractorSpawner : MonoBehaviour
 {
@@ -15,8 +16,8 @@ public class AttractorSpawner : MonoBehaviour
     private static int attractorCount;
 
     [Header("Attraction Distance Settings")]
-    private static float minimumDistance = 3.5f;
-    private static float cullDistance = 2.5f;
+    private static float minimumDistance = 6.0f;
+    private static float cullDistance = 4.5f;
 
     private List<GameObject> attractorSpawns = new List<GameObject>();
 
@@ -99,6 +100,7 @@ public class AttractorSpawner : MonoBehaviour
                 Debug.DrawRay(position, directionAverage, Color.red, 1000);
                 Quaternion quaternionDirection = Quaternion.LookRotation(Quaternion.AngleAxis(90, angleDirection) *  directionAverage, Vector3.up);
                 _branchManager.AddBranch((Instantiate(_branchObject, position, quaternionDirection)));
+                CullAttractors(position);
             }
         }
     }
@@ -112,5 +114,22 @@ public class AttractorSpawner : MonoBehaviour
             Destroy(attractorSpawns[i]);
         }
         attractorSpawns.Clear();
+    }
+
+    private void CullAttractors(Vector3 branchPosition)
+    {
+        for (int j = 0; j < attractorSpawns.Count; j++)
+        {
+            //calculate the distance between branch and attratcor
+            float distance = Vector3.Distance(branchPosition, attractorSpawns[j].transform.position);
+            //delete attractots that are too close
+            if (distance < cullDistance)
+            {
+                Destroy(attractorSpawns[j]);
+                attractorSpawns.RemoveAt(j);
+                continue;
+            }
+
+        }
     }
 }

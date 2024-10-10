@@ -9,10 +9,12 @@ public class PlaceTrunkOnPlane : MonoBehaviour
     public GameObject _prefab;
     public AttractorSpawner _attractorSpawner;
     public BranchManager _branchManager;
+
+    private int populationIterations;
     // Start is called before the first frame update
     void Start()
     {
-        
+        populationIterations = 2;
     }
 
     // Update is called once per frame
@@ -24,7 +26,6 @@ public class PlaceTrunkOnPlane : MonoBehaviour
         // LMB pressed
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log(0);
             RaycastHit hit;
             Ray ray = _cameraMain.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow, 1000.0f);
@@ -33,16 +34,14 @@ public class PlaceTrunkOnPlane : MonoBehaviour
                 Vector3 point = hit.point;
                 point.y += 0.3f;
 
-                Debug.Log(1);
-
                 _branchManager.AddBranch(Instantiate(_prefab, point, Quaternion.identity));
                 _attractorSpawner.SetOrigin(point);
-                Debug.Log(2);
-
                 _attractorSpawner.SpawnAttractors();
-
-                Debug.Log(3);
-                _attractorSpawner.Populate();
+                for(int i = 0; i< populationIterations; i++)
+                {
+                    _attractorSpawner.Populate();
+                }
+                _attractorSpawner.ClearLists();
             }
 
         }
