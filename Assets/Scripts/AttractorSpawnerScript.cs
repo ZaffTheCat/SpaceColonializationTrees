@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class AttractorSpawner : MonoBehaviour
 {
@@ -32,7 +29,7 @@ public class AttractorSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void SetOrigin(Vector3 origin)
@@ -42,7 +39,7 @@ public class AttractorSpawner : MonoBehaviour
     public void SetRange(float range)
     {
         attractorRange = range;
-        if( attractorRange <= 0f)
+        if (attractorRange <= 0f)
         {
             attractorRange = 0.1f;
         }
@@ -61,14 +58,14 @@ public class AttractorSpawner : MonoBehaviour
     public void Populate()
     {
         //iterate through each branch
-        for(int i = 0; i <_branchManager._branchList.Count; i++)
+        for (int i = 0; i < _branchManager._branchList.Count; i++)
         {
             //TODO: make sure not too many branches
 
             int leafCount = 0;
             Vector3 cumulativeDirection = Vector3.zero;
             //iterate through each attractor
-            for(int j = 0; j< attractorSpawns.Count; j++)
+            for (int j = 0; j < attractorSpawns.Count; j++)
             {
                 //calculate the distance between branch and attratcor
                 float distance = Vector3.Distance(_branchManager._branchList[i].transform.position, attractorSpawns[j].transform.position);
@@ -81,7 +78,8 @@ public class AttractorSpawner : MonoBehaviour
                     continue;
                 }
                 //create branch in the direction of the attractor if in range
-                else if (distance < minimumDistance) {
+                else if (distance < minimumDistance)
+                {
                     Vector3 direction = (attractorSpawns[j].transform.position - _branchManager._branchList[i].transform.position);
                     direction = direction.normalized;
 
@@ -97,9 +95,12 @@ public class AttractorSpawner : MonoBehaviour
                 Vector3 position = _branchManager._branchList[i].transform.position + _branchManager._branchList[i].transform.up * 0.5f;
                 Vector3 angleDirection = -_branchManager._branchList[i].transform.right;
 
-                Debug.DrawRay(position, directionAverage, Color.red, 1000);
-                Quaternion quaternionDirection = Quaternion.LookRotation(Quaternion.AngleAxis(90, angleDirection) *  directionAverage, Vector3.up);
-                _branchManager.AddBranch((Instantiate(_branchObject, position, quaternionDirection)));
+                Quaternion quaternionDirection = Quaternion.LookRotation(Quaternion.AngleAxis(90, angleDirection) * directionAverage, Vector3.up);
+                //Debug.Log(_branchManager._branchList[i].transform.localScale);
+                //Vector3 scale = _branchManager._branchList[i].transform.localScale * 0.9f;
+                _branchManager.AddBranch(Instantiate(_branchObject, position, quaternionDirection));
+                //_branchObject.transform.localScale = scale;//(_branchManager._branchList[i].transform.localScale.x * 0.8f, _branchManager._branchList[i].transform.localScale.y * 0.8f, _branchManager._branchList[i].transform.localScale.z * 0.8f);
+
                 CullAttractors(position);
             }
         }
