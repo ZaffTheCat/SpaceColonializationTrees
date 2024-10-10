@@ -63,14 +63,11 @@ public class AttractorSpawner : MonoBehaviour
         for(int i = 0; i <_branchManager._branchList.Count; i++)
         {
             //TODO: make sure not too many branches
-            if (i > 100)
-            {
-                //break;
-            }
+
             int leafCount = 0;
             Vector3 cumulativeDirection = Vector3.zero;
             //iterate through each attractor
-            for(int j=0; j< attractorSpawns.Count; j++)
+            for(int j = 0; j< attractorSpawns.Count; j++)
             {
                 //calculate the distance between branch and attratcor
                 float distance = Vector3.Distance(_branchManager._branchList[i].transform.position, attractorSpawns[j].transform.position);
@@ -96,7 +93,7 @@ public class AttractorSpawner : MonoBehaviour
             if (leafCount > 0)
             {
                 Vector3 directionAverage = cumulativeDirection / leafCount;
-                Vector3 position = _branchManager._branchList[i].transform.position + directionAverage;
+                Vector3 position = _branchManager._branchList[i].transform.position + _branchManager._branchList[i].transform.up * 0.5f;
                 Vector3 angleDirection = -_branchManager._branchList[i].transform.right;
 
                 Debug.DrawRay(position, directionAverage, Color.red, 1000);
