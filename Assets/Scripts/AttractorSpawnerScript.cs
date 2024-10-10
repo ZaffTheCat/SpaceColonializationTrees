@@ -96,10 +96,10 @@ public class AttractorSpawner : MonoBehaviour
                 Vector3 angleDirection = -_branchManager._branchList[i].transform.right;
 
                 Quaternion quaternionDirection = Quaternion.LookRotation(Quaternion.AngleAxis(90, angleDirection) * directionAverage, Vector3.up);
-                //Debug.Log(_branchManager._branchList[i].transform.localScale);
-                //Vector3 scale = _branchManager._branchList[i].transform.localScale * 0.9f;
+                Debug.Log(_branchManager._branchList[i].transform.localScale);
+                Vector3 scale = _branchManager._branchList[i].transform.localScale * 0.9f;
                 _branchManager.AddBranch(Instantiate(_branchObject, position, quaternionDirection));
-                //_branchObject.transform.localScale = scale;//(_branchManager._branchList[i].transform.localScale.x * 0.8f, _branchManager._branchList[i].transform.localScale.y * 0.8f, _branchManager._branchList[i].transform.localScale.z * 0.8f);
+                _branchObject.transform.localScale = scale;//(_branchManager._branchList[i].transform.localScale.x * 0.8f, _branchManager._branchList[i].transform.localScale.y * 0.8f, _branchManager._branchList[i].transform.localScale.z * 0.8f);
 
                 CullAttractors(position);
             }
