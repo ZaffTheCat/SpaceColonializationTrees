@@ -65,7 +65,7 @@ public class AttractorSpawner : MonoBehaviour
             //TODO: make sure not too many branches
             if (i > 100)
             {
-                break;
+                //break;
             }
             int leafCount = 0;
             Vector3 cumulativeDirection = Vector3.zero;
@@ -104,9 +104,12 @@ public class AttractorSpawner : MonoBehaviour
                 _branchManager.AddBranch((Instantiate(_branchObject, position, quaternionDirection)));
             }
         }
+    }
+
+    public void ClearLists()
+    {
         //empty the list at the end and delete unused attractors
         _branchManager._branchList.Clear();
-
         for (int i = 0; i < attractorSpawns.Count; i++)
         {
             Destroy(attractorSpawns[i]);
