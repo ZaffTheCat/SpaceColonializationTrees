@@ -65,13 +65,12 @@ public class CameraCode : MonoBehaviour
         {
             mouseX += Input.GetAxisRaw("Mouse X") * Time.fixedDeltaTime * mouseSpeed;
             mouseY -= Input.GetAxisRaw("Mouse Y") * Time.fixedDeltaTime * mouseSpeed;
-
         }
 
         // Calculate new camera rotation, use linear interpolation for smoothness
         mouseY = Mathf.Clamp(mouseY, -80.0f, 80.0f);
         Quaternion rotation = Quaternion.AngleAxis(mouseY, this.transform.right) * Quaternion.AngleAxis(mouseX, Vector3.up);
-        cameraMain.transform.rotation = Quaternion.Lerp(cameraMain.transform.rotation, rotation, Time.deltaTime * mouseLerpSpeed);
+        cameraMain.transform.rotation = rotation;// Quaternion.Lerp(cameraMain.transform.rotation, rotation, Time.deltaTime * mouseLerpSpeed);
     }
     
 }

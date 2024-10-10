@@ -15,8 +15,8 @@ public class AttractorSpawner : MonoBehaviour
     private static int attractorCount;
 
     [Header("Attraction Distance Settings")]
-    private static float minimumDistance = 4.5f;
-    private static float cullDistance = 2.0f;
+    private static float minimumDistance = 3.5f;
+    private static float cullDistance = 2.5f;
 
     private List<GameObject> attractorSpawns = new List<GameObject>();
 
@@ -25,7 +25,7 @@ public class AttractorSpawner : MonoBehaviour
     {
         attractorOrigin = Vector3.zero;
         SetRange(5.0f);
-        attractorCount = 10;
+        attractorCount = 20;
     }
 
     // Update is called once per frame
@@ -62,12 +62,18 @@ public class AttractorSpawner : MonoBehaviour
         //iterate through each branch
         for(int i = 0; i <_branchManager._branchList.Count; i++)
         {
+            //TODO: make sure not too many branches
+            if (i > 100)
+            {
+                break;
+            }
+            int leafCount = 0;
+            Vector3 cumulativeDirection = Vector3.zero;
             //iterate through each attractor
             for(int j=0; j< attractorSpawns.Count; j++)
             {
                 //calculate the distance between branch and attratcor
                 float distance = Vector3.Distance(_branchManager._branchList[i].transform.position, attractorSpawns[j].transform.position);
-                
 
                 //delete attractots that are too close
                 if (distance < cullDistance)
@@ -78,12 +84,24 @@ public class AttractorSpawner : MonoBehaviour
                 }
                 //create branch in the direction of the attractor if in range
                 else if (distance < minimumDistance) {
-                    Vector3 direction = (attractorSpawns[j].transform.position - _branchManager._branchList[i].transform.position).normalized;
-                    Vector3 position = _branchManager._branchList[i].transform.position + direction;
-                    Quaternion quaternionDirection = Quaternion.identity;//Quaternion.LookRotation(direction, Vector3.up);
-                    _branchManager.AddBranch((Instantiate(_branchObject, position, quaternionDirection)));
+                    Vector3 direction = (attractorSpawns[j].transform.position - _branchManager._branchList[i].transform.position);
+                    direction = direction.normalized;
+
+                    cumulativeDirection += direction;
+                    leafCount++;
                 }
 
+            }
+
+            if (leafCount > 0)
+            {
+                Vector3 directionAverage = cumulativeDirection / leafCount;
+                Vector3 position = _branchManager._branchList[i].transform.position + directionAverage;
+                Vector3 angleDirection = -_branchManager._branchList[i].transform.right;
+
+                Debug.DrawRay(position, directionAverage, Color.red, 1000);
+                Quaternion quaternionDirection = Quaternion.LookRotation(Quaternion.AngleAxis(90, angleDirection) *  directionAverage, Vector3.up);
+                _branchManager.AddBranch((Instantiate(_branchObject, position, quaternionDirection)));
             }
         }
         //empty the list at the end and delete unused attractors
@@ -91,8 +109,8 @@ public class AttractorSpawner : MonoBehaviour
 
         for (int i = 0; i < attractorSpawns.Count; i++)
         {
-            Destroy(attractorSpawns[i]);
+            //Destroy(attractorSpawns[i]);
         }
-        attractorSpawns.Clear();
+        //attractorSpawns.Clear();
     }
 }
