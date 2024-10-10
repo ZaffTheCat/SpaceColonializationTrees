@@ -109,8 +109,8 @@ public class AttractorSpawner : MonoBehaviour
 
         for (int i = 0; i < attractorSpawns.Count; i++)
         {
-            //Destroy(attractorSpawns[i]);
+            Destroy(attractorSpawns[i]);
         }
-        //attractorSpawns.Clear();
+        attractorSpawns.Clear();
     }
 }
