@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AttractorSpawner : MonoBehaviour
 {
@@ -60,8 +61,6 @@ public class AttractorSpawner : MonoBehaviour
         //iterate through each branch
         for (int i = 0; i < _branchManager._branchList.Count; i++)
         {
-            //TODO: make sure not too many branches
-
             int leafCount = 0;
             Vector3 cumulativeDirection = Vector3.zero;
             //iterate through each attractor
@@ -96,10 +95,9 @@ public class AttractorSpawner : MonoBehaviour
                 Vector3 angleDirection = -_branchManager._branchList[i].transform.right;
 
                 Quaternion quaternionDirection = Quaternion.LookRotation(Quaternion.AngleAxis(90, angleDirection) * directionAverage, Vector3.up);
-                Debug.Log(_branchManager._branchList[i].transform.localScale);
                 Vector3 scale = _branchManager._branchList[i].transform.localScale * 0.9f;
-                _branchManager.AddBranch(Instantiate(_branchObject, position, quaternionDirection));
-                _branchObject.transform.localScale = scale;//(_branchManager._branchList[i].transform.localScale.x * 0.8f, _branchManager._branchList[i].transform.localScale.y * 0.8f, _branchManager._branchList[i].transform.localScale.z * 0.8f);
+                //_branchManager.AddBranch(Instantiate(_branchObject, position, quaternionDirection));
+                //_branchObject.transform.localScale = scale;//(_branchManager._branchList[i].transform.localScale.x * 0.8f, _branchManager._branchList[i].transform.localScale.y * 0.8f, _branchManager._branchList[i].transform.localScale.z * 0.8f);
 
                 CullAttractors(position);
             }
@@ -119,6 +117,8 @@ public class AttractorSpawner : MonoBehaviour
 
     private void CullAttractors(Vector3 branchPosition)
     {
+        Vector3 scale = new Vector3(0.5f, 0.3f, 0.5f);
+        _branchObject.transform.localScale = scale;
         for (int j = 0; j < attractorSpawns.Count; j++)
         {
             //calculate the distance between branch and attratcor

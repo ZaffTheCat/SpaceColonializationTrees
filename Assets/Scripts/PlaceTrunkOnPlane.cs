@@ -26,14 +26,16 @@ public class PlaceTrunkOnPlane : MonoBehaviour
         // LMB pressed
         if (Input.GetMouseButtonDown(0))
         {
+            //find where the user clicked to place the tree there
             RaycastHit hit;
             Ray ray = _cameraMain.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow, 1000.0f);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
                 Vector3 point = hit.point;
-                point.y += 0.3f;
+                point.y -= 0.1f;
 
+                //place first trunk/tree
                 _branchManager.AddBranch(Instantiate(_prefab, point, Quaternion.identity));
                 _attractorSpawner.SetOrigin(point);
                 _attractorSpawner.SpawnAttractors();

@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraMain: {fileID: 265278557}
-  _prefab: {fileID: 1028467757859377201, guid: c78757bee17233e458e42998491239d7, type: 3}
+  _prefab: {fileID: 5141417586341547776, guid: 12760c545e34b424780d0aa144ca66dc, type: 3}
   _attractorSpawner: {fileID: 1434890319}
   _branchManager: {fileID: 877737073}
 --- !u!1 &877737071
