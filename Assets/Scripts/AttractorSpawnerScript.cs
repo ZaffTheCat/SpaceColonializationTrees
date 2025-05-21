@@ -21,6 +21,9 @@ public class AttractorSpawner : MonoBehaviour
     [Header("Attraction")]
     private List<GameObject> attractorSpawns = new List<GameObject>();
 
+    [Header("Branch")]
+    public List<float> branchScales = new List<float>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +41,7 @@ public class AttractorSpawner : MonoBehaviour
     public void SetOrigin(Vector3 origin)
     {
         attractorOrigin = origin;
+        branchScales.Add(1.0f);
     }
     public void SetRange(float range)
     {
@@ -97,15 +101,12 @@ public class AttractorSpawner : MonoBehaviour
             if (leafCount > 0)
             {
                 Vector3 directionAverage = cumulativeDirection / leafCount;
-                Vector3 position = _branchManager._branchList[i].transform.position + _branchManager._branchList[i].transform.up * _branchManager._branchList[i].transform.localScale.y;
+                Vector3 position = _branchManager._branchList[i].transform.position + _branchManager._branchList[i].transform.up * branchScales[i];
                 Vector3 angleDirection = -_branchManager._branchList[i].transform.right;
                 
                 Quaternion quaternionDirection = Quaternion.LookRotation(Quaternion.AngleAxis(90, angleDirection) * directionAverage, Vector3.up);
                 Vector3 scale = _branchManager._branchList[i].transform.localScale * 0.8f;
-                if (scale.magnitude < 0.17f)
-                {
-                    scale = new Vector3(0.1f, 0.1f, 0.1f);
-                }
+                branchScales.Add(scale.y);
 
                 _branchManager.AddBranch(Instantiate(_branchObject, position, quaternionDirection));
                 _branchObject.transform.localScale = scale;//(_branchManager._branchList[i].transform.localScale.x * 0.8f, _branchManager._branchList[i].transform.localScale.y * 0.8f, _branchManager._branchList[i].transform.localScale.z * 0.8f);
