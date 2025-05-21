@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 public class AttractorSpawner : MonoBehaviour
 {
     public GameObject _attractorObject;
+
     public GameObject _branchObject;
     public BranchManager _branchManager;
 
@@ -15,8 +16,9 @@ public class AttractorSpawner : MonoBehaviour
 
     [Header("Attraction Distance Settings")]
     private static float minimumDistance = 6.0f;
-    private static float cullDistance = 4.5f;
+    private static float minimumCullDistance = 4.5f;
 
+    [Header("Attraction")]
     private List<GameObject> attractorSpawns = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -58,19 +60,22 @@ public class AttractorSpawner : MonoBehaviour
 
     public void Populate()
     {
+
         //iterate through each branch
         for (int i = 0; i < _branchManager._branchList.Count; i++)
         {
             int leafCount = 0;
             Vector3 cumulativeDirection = Vector3.zero;
+            float distance = 0.0f;
+
             //iterate through each attractor
             for (int j = 0; j < attractorSpawns.Count; j++)
             {
                 //calculate the distance between branch and attratcor
-                float distance = Vector3.Distance(_branchManager._branchList[i].transform.position, attractorSpawns[j].transform.position);
+                distance = Vector3.Distance(_branchManager._branchList[i].transform.position, attractorSpawns[j].transform.position);
 
                 //delete attractots that are too close
-                if (distance < cullDistance)
+                if (distance < minimumCullDistance)
                 {
                     Destroy(attractorSpawns[j]);
                     attractorSpawns.RemoveAt(j);
@@ -88,16 +93,22 @@ public class AttractorSpawner : MonoBehaviour
 
             }
 
+            //create the new branch in the direction of the average leaf
             if (leafCount > 0)
             {
                 Vector3 directionAverage = cumulativeDirection / leafCount;
-                Vector3 position = _branchManager._branchList[i].transform.position + _branchManager._branchList[i].transform.up * 0.5f;
+                Vector3 position = _branchManager._branchList[i].transform.position + _branchManager._branchList[i].transform.up * _branchManager._branchList[i].transform.localScale.y;
                 Vector3 angleDirection = -_branchManager._branchList[i].transform.right;
-
+                
                 Quaternion quaternionDirection = Quaternion.LookRotation(Quaternion.AngleAxis(90, angleDirection) * directionAverage, Vector3.up);
-                Vector3 scale = _branchManager._branchList[i].transform.localScale * 0.9f;
-                //_branchManager.AddBranch(Instantiate(_branchObject, position, quaternionDirection));
-                //_branchObject.transform.localScale = scale;//(_branchManager._branchList[i].transform.localScale.x * 0.8f, _branchManager._branchList[i].transform.localScale.y * 0.8f, _branchManager._branchList[i].transform.localScale.z * 0.8f);
+                Vector3 scale = _branchManager._branchList[i].transform.localScale * 0.8f;
+                if (scale.magnitude < 0.17f)
+                {
+                    scale = new Vector3(0.1f, 0.1f, 0.1f);
+                }
+
+                _branchManager.AddBranch(Instantiate(_branchObject, position, quaternionDirection));
+                _branchObject.transform.localScale = scale;//(_branchManager._branchList[i].transform.localScale.x * 0.8f, _branchManager._branchList[i].transform.localScale.y * 0.8f, _branchManager._branchList[i].transform.localScale.z * 0.8f);
 
                 CullAttractors(position);
             }
@@ -117,14 +128,12 @@ public class AttractorSpawner : MonoBehaviour
 
     private void CullAttractors(Vector3 branchPosition)
     {
-        Vector3 scale = new Vector3(0.5f, 0.3f, 0.5f);
-        _branchObject.transform.localScale = scale;
         for (int j = 0; j < attractorSpawns.Count; j++)
         {
             //calculate the distance between branch and attratcor
             float distance = Vector3.Distance(branchPosition, attractorSpawns[j].transform.position);
             //delete attractots that are too close
-            if (distance < cullDistance)
+            if (distance < minimumCullDistance)
             {
                 Destroy(attractorSpawns[j]);
                 attractorSpawns.RemoveAt(j);

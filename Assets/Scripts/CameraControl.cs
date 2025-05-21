@@ -15,7 +15,7 @@ public class CameraCode : MonoBehaviour
 
     [Header("Mouse Settings")]
     private float mouseSpeed = 100.0f;
-    private float mouseLerpSpeed = 4.0f;
+    //private float mouseLerpSpeed = 4.0f;
 
     // Start is called before the first frame update
     void Start()

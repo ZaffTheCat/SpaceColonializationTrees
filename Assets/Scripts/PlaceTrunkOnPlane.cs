@@ -32,8 +32,10 @@ public class PlaceTrunkOnPlane : MonoBehaviour
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.yellow, 1000.0f);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
+                //First branch appears slightly above than where user clicked.
                 Vector3 point = hit.point;
-                point.y -= 0.1f;
+                _prefab.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                point.y += _prefab.transform.lossyScale.y / 2.0f;
 
                 //place first trunk/tree
                 _branchManager.AddBranch(Instantiate(_prefab, point, Quaternion.identity));
